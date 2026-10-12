@@ -1,0 +1,212 @@
+@if (loading()) {
+<div class="container sc-section">
+  <sc-loading-spinner message="Loading product…"></sc-loading-spinner>
+</div>
+} @else if (notFound() || !product()) {
+<div class="container sc-section">
+  <sc-empty-state icon="bi-box-seam" title="Product not found" subtitle="It may have been removed or deactivated.">
+    <a routerLink="/products" class="btn btn-primary mt-3">Back to Products</a>
+  </sc-empty-state>
+</div>
+} @else {
+<div class="container sc-section sc-fade-in">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb small">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item"><a routerLink="/products">Products</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ product()!.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-5">
+
+    <div class="col-lg-2">
+      <!-- Thumbnails -->
+      @if (images().length > 1) {
+      <div class="sc-thumbnail-container" role="tablist" aria-label="Product image thumbnails">
+        @for (image of images(); track image.id; let i = $index) {
+        <button type="button" class="sc-thumbnail" role="tab" [class.active]="i === activeImageIndex()"
+          [attr.aria-selected]="i === activeImageIndex()" [attr.aria-label]="'View image ' + (i + 1)"
+          (click)="selectImage(i)">
+          <img [src]="resolveImage(image.imageUrl)" [alt]="image.altText" loading="lazy" />
+        </button>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- ================= Image Carousel ================= -->
+    <div class="col-lg-4">
+
+      @if (images().length === 0) {
+      <!-- Empty-image state -->
+      <div class="sc-carousel-empty d-flex flex-column align-items-center justify-content-center">
+        <i class="bi bi-image display-1 text-muted"></i>
+        <p class="text-muted mt-2 mb-0">No images available for this product</p>
+      </div>
+      } @else {
+      <div class="sc-carousel" role="region" aria-label="Product image carousel" tabindex="0"
+        (keydown)="onCarouselKeydown($event)">
+        <!-- Main preview -->
+        <div class="sc-carousel-main">
+          @for (image of images(); track image.id; let i = $index) {
+          <img [src]="resolveImage(image.imageUrl)" [alt]="image.altText || (product()!.name + ' image ' + (i + 1))"
+            class="sc-carousel-slide" [class.active]="i === activeImageIndex()" (click)="openPreview()"
+            [attr.loading]="i === 0 ? null : 'lazy'" />
+          }
+
+          @if (images().length > 1) {
+          <button class="sc-carousel-control sc-carousel-control-prev" type="button" aria-label="Previous image"
+            (click)="prevImage()">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="sc-carousel-control sc-carousel-control-next" type="button" aria-label="Next image"
+            (click)="nextImage()">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
+
+          <!-- Indicators -->
+          <div class="sc-carousel-indicators">
+            @for (image of images(); track image.id; let i = $index) {
+            <button type="button" [class.active]="i === activeImageIndex()" [attr.aria-label]="'Go to image ' + (i + 1)"
+              [attr.aria-current]="i === activeImageIndex() ? 'true' : null" (click)="selectImage(i)"></button>
+            }
+          </div>
+          }
+        </div>
+
+
+      </div>
+      }
+
+      <!-- Videos -->
+      @if (product()!.videos.length > 0) {
+      <div class="mt-4">
+        <h6 class="mb-2">Product Videos</h6>
+        <div class="row g-3">
+          @for (video of product()!.videos; track video.id) {
+          <div class="col-6">
+            <video [src]="resolveImage(video.videoUrl)" [title]="video.title" controls class="w-100 rounded"></video>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- ================= Product Info ================= -->
+    <div class="col-lg-6">
+      <p class="small text-muted mb-1">{{ product()!.brandName }} · {{ product()!.categoryName }}</p>
+      <h2 class="mb-2">{{ product()!.name }}</h2>
+
+      @if (product()!.shortDescription) {
+      <p class="text-muted">{{ product()!.shortDescription }}</p>
+      }
+
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <span class="fs-3 fw-bold" style="color: var(--sc-maroon);">₹{{ effectivePrice() }}</span>
+        <span class="text-muted text-decoration-line-through">₹{{ product()!.mrp }}</span>
+        <span class="badge badge-sc-gold">Wholesale Price</span>
+      </div>
+
+      <ul class="list-unstyled sc-spec-list mb-4">
+        <li><strong>SKU:</strong> {{ selectedVariant()?.sku || product()!.sku }}</li>
+        <li><strong>Min. Wholesale Qty:</strong> {{ product()!.minWholesaleQuantity }} pcs</li>
+
+        <li><strong>Fabric:</strong> {{ product()!.fabric }}</li>
+        <li><strong>Pattern:</strong> {{ product()!.pattern }}</li>
+        @if (product()!.setType) {
+        <li><strong>Set Type:</strong> {{ product()!.setType}}</li>
+        }
+        @if (product()!.work) {
+        <li><strong>Work:</strong> {{ product()!.work}}</li>
+        }
+
+        @if (product()!.style) {
+        <li><strong>Style:</strong> {{ product()!.style}}</li>
+        }
+        @if (product()!.bottomStyle) {
+        <li><strong>Bottom Style:</strong> {{ product()!.bottomStyle}}</li>
+        }
+        @if (product()!.stitchType) {
+        <li><strong>Stitch Type:</strong> {{ product()!.stitchType}}</li>
+        }
+        @if (product()!.sleeveType) {
+        <li><strong>Sleeve Type:</strong> {{ product()!.sleeveType}}</li>
+        }
+        @if (product()!.neck) {
+        <li><strong>Neck:</strong> {{ product()!.neck}}</li>
+        }
+        @if (product()!.occasion) {
+        <li><strong>Occasion:</strong> {{ product()!.occasion}}</li>
+        }
+
+        <li>
+          <strong>Availability:</strong>
+          @if (selectedVariant(); as v) {
+          @if (v.stockQuantity > 0) {
+          <span class="text-success">In Stock ({{ v.stockQuantity }} pcs)</span>
+          } @else {
+          <span class="text-danger">Out of Stock</span>
+          }
+          } @else {
+          <span [class.text-success]="product()!.stockQuantity > 0" [class.text-danger]="product()!.stockQuantity <= 0">
+            {{ product()!.stockQuantity > 0 ? 'In Stock' : 'Out of Stock' }}
+          </span>
+          }
+        </li>
+      </ul>
+
+      <!-- Color selection -->
+      @if (product()!.availableColors.length > 0) {
+      <div class="mb-3">
+        <h6 class="mb-2">Color: <span class="fw-normal text-muted">{{ selectedColor() }}</span></h6>
+        <div class="d-flex flex-wrap gap-2">
+          @for (color of product()!.availableColors; track color) {
+          <button type="button" class="sc-color-swatch" [class.active]="color === selectedColor()"
+            [style.backgroundColor]="getColorHex(color)" [attr.aria-label]="color"
+            [attr.aria-pressed]="color === selectedColor()" [title]="color" (click)="selectColor(color)"></button>
+          }
+        </div>
+      </div>
+      }
+
+      <!-- Size selection -->
+      @if (availableSizesForColor().length > 0) {
+      <div class="mb-4">
+        <h6 class="mb-2">Size</h6>
+        <div class="d-flex flex-wrap gap-2">
+          @for (size of availableSizesForColor(); track size) {
+          <button type="button" class="btn btn-sm" [class.btn-primary]="size === selectedSize()"
+            [class.btn-outline-secondary]="size !== selectedSize()" (click)="selectSize(size)">
+            {{ size }}
+          </button>
+          }
+        </div>
+      </div>
+      }
+
+      <div class="d-flex gap-2 mb-4">
+        <a routerLink="/contact" class="btn btn-primary btn-lg flex-fill">
+          <i class="bi bi-chat-dots me-2"></i>Enquire to Order
+        </a>
+      </div>
+
+      @if (product()!.description) {
+      <div class="border-top pt-4">
+        <h6 class="mb-2">Product Description</h6>
+        <p class="text-muted mb-0" style="white-space: pre-line;">{{ product()!.description }}</p>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}
+
+
+
+<!-- Child Component Slideshow -->
+@if (showPreview()) {
+<app-image-viewer [images]="images()" (closeModal)="closePreview()" [activeIndex]="activeImageIndex()">
+</app-image-viewer>
+}

@@ -1,0 +1,18 @@
+<div class="sc-toast-stack">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div class="toast show sc-toast sc-toast-{{ toast.type }}" role="alert">
+      <div class="d-flex align-items-center">
+        <div class="toast-body d-flex align-items-center gap-2">
+          <i class="bi {{ iconFor(toast.type) }}"></i>
+          <span>{{ toast.message }}</span>
+        </div>
+        <button
+          type="button"
+          class="btn-close btn-close-white me-2 m-auto"
+          aria-label="Close"
+          (click)="toastService.dismiss(toast.id)"
+        ></button>
+      </div>
+    </div>
+  }
+</div>

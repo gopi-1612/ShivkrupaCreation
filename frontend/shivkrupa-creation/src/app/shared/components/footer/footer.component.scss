@@ -1,0 +1,25 @@
+.sc-footer {
+  background-color: var(--sc-charcoal);
+  color: #e9e4de;
+}
+
+.sc-footer-brand {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.sc-gold-text {
+  color: var(--sc-gold);
+}
+
+.sc-footer-links li {
+  margin-bottom: 0.5rem;
+}
+.sc-footer-links a {
+  color: #c9c2b9;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
+}
+.sc-footer-links a:hover {
+  color: var(--sc-gold);
+}

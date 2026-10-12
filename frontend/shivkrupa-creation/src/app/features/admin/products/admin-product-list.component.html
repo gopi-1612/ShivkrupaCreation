@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <h2 class="mb-0">Manage Products</h2>
+  <a routerLink="/admin/products/new" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Product</a>
+</div>
+
+<div class="card p-3 mb-3">
+  <div class="input-group">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by name, SKU, category, or brand…"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()"
+    />
+    <button class="btn btn-outline-primary" type="button" (click)="onSearch()">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  @if (loading()) {
+    <sc-loading-spinner message="Loading products…"></sc-loading-spinner>
+  } @else if (products().length === 0) {
+    <sc-empty-state icon="bi-box-seam" title="No products found"></sc-empty-state>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Product</th>
+            <th>SKU</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of products(); track product.id) {
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <img [src]="resolveImage(product.primaryImageUrl)" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:4px;" />
+                  <span>{{ product.name }}</span>
+                  @if (product.isFeatured) {
+                    <span class="badge badge-sc-gold">Featured</span>
+                  }
+                </div>
+              </td>
+              <td>{{ product.sku }}</td>
+              <td>{{ product.categoryName }}</td>
+              <td>{{ product.brandName }}</td>
+              <td>₹{{ product.wholesalePrice }}</td>
+              <td>
+                <span class="badge" [class.bg-success]="product.isActive" [class.bg-secondary]="!product.isActive">
+                  {{ product.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td class="text-end">
+                <div class="btn-group btn-group-sm">
+                  <a [routerLink]="['/admin/products', product.id, 'edit']" class="btn btn-outline-secondary">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <button class="btn btn-outline-secondary" type="button" (click)="toggleStatus(product)">
+                    <i class="bi" [class.bi-eye-slash]="product.isActive" [class.bi-eye]="!product.isActive"></i>
+                  </button>
+                  <button class="btn btn-outline-danger" type="button" (click)="deleteProduct(product)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages() > 1) {
+      <nav class="p-3" aria-label="Product pagination">
+        <ul class="pagination justify-content-center mb-0">
+          @for (page of pageNumbers; track page) {
+            <li class="page-item" [class.active]="page === pageNumber()">
+              <button class="page-link" type="button" (click)="goToPage(page)">{{ page }}</button>
+            </li>
+          }
+        </ul>
+      </nav>
+    }
+  }
+</div>

@@ -1,0 +1,173 @@
+/* ================= Carousel ================= */
+.sc-carousel {
+  outline: none;
+}
+
+.sc-carousel:focus-visible .sc-carousel-main {
+  outline: 3px solid var(--sc-gold);
+  outline-offset: 2px;
+}
+
+.sc-carousel-main {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/ 5;
+  background-color: var(--sc-ivory);
+  border-radius: var(--sc-radius);
+  overflow: hidden;
+}
+
+.sc-carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+  pointer-events: none;
+}
+
+.sc-carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.sc-carousel-control {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  opacity: 0.7;
+  transition: opacity 0.15s ease-in-out;
+  z-index: 2;
+}
+
+.sc-carousel-control:hover {
+  opacity: 1;
+}
+
+.sc-carousel-control-prev {
+  left: 0;
+}
+
+.sc-carousel-control-next {
+  right: 0;
+}
+
+.sc-carousel-indicators {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.sc-carousel-indicators button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 0;
+}
+
+.sc-carousel-indicators button.active {
+  background-color: var(--sc-gold);
+  transform: scale(1.2);
+}
+
+.sc-carousel-empty {
+  aspect-ratio: 4 / 5;
+  border: 2px dashed rgba(0, 0, 0, 0.1);
+  border-radius: var(--sc-radius);
+  background-color: var(--sc-ivory);
+}
+
+/* ================= Thumbnails ================= */
+
+@media(max-width: 991.98px) {
+
+  .sc-thumbnail-container {
+    flex-direction: row !important;
+  }
+}
+
+.sc-thumbnail-container {
+  display: flex !important;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  align-items: end;
+  flex-direction: column;
+}
+
+.sc-thumbnail {
+  margin-top: 0.25rem;
+  flex: 0 0 auto;
+  width: 85px;
+  height: 85px;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  border: 2px solid transparent;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.sc-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sc-thumbnail:hover {
+  transform: translateY(-2px);
+}
+
+.sc-thumbnail.active {
+  border-color: var(--sc-maroon);
+}
+
+/* ================= Product info ================= */
+.sc-spec-list li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.sc-color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  outline: 1px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.15s ease-in-out, outline-color 0.15s ease-in-out;
+}
+
+.sc-color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.sc-color-swatch.active {
+  outline: 2px solid var(--sc-maroon);
+  outline-offset: 2px;
+}
+
+@media (max-width: 991.98px) {
+  .sc-carousel-main {
+    aspect-ratio: 1 / 1;
+  }
+}

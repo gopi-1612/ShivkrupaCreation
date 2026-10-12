@@ -1,0 +1,127 @@
+<h2 class="mb-4">Dashboard</h2>
+
+@if (loading()) {
+  <sc-loading-spinner message="Loading dashboard…"></sc-loading-spinner>
+}
+@if (!loading() && stats(); as s) {
+  <!-- ---------- Stat cards ---------- -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted small mb-1">Total Products</p>
+            <h3 class="mb-0">{{ s.totalProducts }}</h3>
+          </div>
+          <i class="bi bi-box-seam fs-2" style="color: var(--sc-maroon);"></i>
+        </div>
+        <small class="text-muted mt-2">{{ s.activeProducts }} active · {{ s.inactiveProducts }} inactive</small>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted small mb-1">Out of Stock</p>
+            <h3 class="mb-0">{{ s.outOfStockProducts }}</h3>
+          </div>
+          <i class="bi bi-exclamation-triangle fs-2 text-danger"></i>
+        </div>
+        <small class="text-muted mt-2">Needs restocking</small>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted small mb-1">Categories / Brands</p>
+            <h3 class="mb-0">{{ s.totalCategories }} / {{ s.totalBrands }}</h3>
+          </div>
+          <i class="bi bi-tags fs-2" style="color: var(--sc-gold);"></i>
+        </div>
+        <small class="text-muted mt-2">Catalog structure</small>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-3">
+      <div class="card p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="text-muted small mb-1">Customers</p>
+            <h3 class="mb-0">{{ s.totalCustomers }}</h3>
+          </div>
+          <i class="bi bi-people fs-2" style="color: var(--sc-maroon);"></i>
+        </div>
+        <small class="text-muted mt-2">{{ s.activeCustomers }} active · {{ s.newCustomersThisMonth }} new this month</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- ---------- Products by category ---------- -->
+    <div class="col-lg-6">
+      <div class="card p-4 h-100">
+        <h6 class="mb-3">Products by Category</h6>
+        @if (s.productsByCategory.length === 0) {
+          <p class="text-muted mb-0">No categories yet.</p>
+        } @else {
+          @for (cat of s.productsByCategory; track cat.categoryName) {
+            <div class="mb-3">
+              <div class="d-flex justify-content-between small mb-1">
+                <span>{{ cat.categoryName }}</span>
+                <span class="text-muted">{{ cat.productCount }}</span>
+              </div>
+              <div class="progress" style="height: 8px;">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  [style.width.%]="(cat.productCount / maxCategoryCount()) * 100"
+                  [style.backgroundColor]="'var(--sc-maroon)'"
+                ></div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- ---------- Recently added products ---------- -->
+    <div class="col-lg-6">
+      <div class="card p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h6 class="mb-0">Recently Added Products</h6>
+          <a routerLink="/admin/products" class="small">View all</a>
+        </div>
+        @if (s.recentlyAddedProducts.length === 0) {
+          <p class="text-muted mb-0">No products yet.</p>
+        } @else {
+          <ul class="list-unstyled mb-0">
+            @for (p of s.recentlyAddedProducts; track p.id) {
+              <li class="d-flex align-items-center gap-3 mb-3">
+                <img
+                  [src]="productService.resolveMediaUrl(p.primaryImageUrl) || 'https://placehold.co/60x60'"
+                  alt=""
+                  class="rounded"
+                  style="width:48px;height:48px;object-fit:cover;"
+                />
+                <div class="flex-grow-1">
+                  <p class="mb-0 fw-semibold small">{{ p.name }}</p>
+                  <small class="text-muted">₹{{ p.wholesalePrice }}</small>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 d-flex gap-2 flex-wrap">
+    <a routerLink="/admin/products/new" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Add Product</a>
+    <a routerLink="/admin/categories" class="btn btn-outline-primary">Manage Categories</a>
+    <a routerLink="/admin/brands" class="btn btn-outline-primary">Manage Brands</a>
+    <a routerLink="/admin/customers" class="btn btn-outline-primary">Manage Customers</a>
+  </div>
+}

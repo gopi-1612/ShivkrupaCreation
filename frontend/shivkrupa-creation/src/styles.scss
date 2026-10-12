@@ -1,0 +1,171 @@
+/* ==========================================================================
+   Shivkrupa Creation — Global Styles
+   A minimal, elegant, wholesale-clothing-inspired palette:
+   deep maroon (brand/primary), warm gold (accent), soft ivory (background).
+   ========================================================================== */
+
+:root {
+  --sc-maroon: #7a1f2b;
+  --sc-maroon-dark: #5c1620;
+  --sc-gold: #c99a3a;
+  --sc-gold-light: #f4e4c1;
+  --sc-ivory: #faf7f2;
+  --sc-charcoal: #2b2420;
+  --sc-muted: #8a7f76;
+  --sc-success: #3a7a4f;
+  --sc-danger: #b3261e;
+
+  --sc-radius: 0.6rem;
+  --sc-shadow-sm: 0 2px 8px rgba(43, 36, 32, 0.06);
+  --sc-shadow-md: 0 8px 24px rgba(43, 36, 32, 0.1);
+  --sc-transition: all 0.2s ease-in-out;
+}
+
+/* Bootstrap primary color overrides to match brand */
+:root {
+  --bs-primary: var(--sc-maroon);
+  --bs-primary-rgb: 122, 31, 43;
+  --bs-link-color: var(--sc-maroon);
+  --bs-link-hover-color: var(--sc-maroon-dark);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--sc-ivory);
+  color: var(--sc-charcoal);
+  font-family: 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  background-color: var(--sc-maroon);
+  border-color: var(--sc-maroon);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--sc-maroon-dark);
+  border-color: var(--sc-maroon-dark);
+}
+.btn-outline-primary {
+  color: var(--sc-maroon);
+  border-color: var(--sc-maroon);
+}
+.btn-outline-primary:hover {
+  background-color: var(--sc-maroon);
+  border-color: var(--sc-maroon);
+}
+.btn-gold {
+  background-color: var(--sc-gold);
+  border-color: var(--sc-gold);
+  color: #fff;
+}
+.btn-gold:hover {
+  background-color: #b3862f;
+  color: #fff;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--sc-radius);
+  box-shadow: var(--sc-shadow-sm);
+  transition: var(--sc-transition);
+}
+.card:hover {
+  box-shadow: var(--sc-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ---------- Links ---------- */
+a {
+  text-decoration: none;
+}
+
+/* ---------- Subtle hover-lift utility ---------- */
+.sc-hover-lift {
+  transition: var(--sc-transition);
+}
+.sc-hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sc-shadow-md);
+}
+
+/* ---------- Fade-in animation for route content ---------- */
+@keyframes sc-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.sc-fade-in {
+  animation: sc-fade-in 0.35s ease-out;
+}
+
+/* ---------- Section spacing helper ---------- */
+.sc-section {
+  padding: 3rem 0;
+}
+
+/* ---------- Badges ---------- */
+.badge-sc-gold {
+  background-color: var(--sc-gold-light);
+  color: var(--sc-maroon-dark);
+  font-weight: 600;
+}
+
+/* ---------- Scrollbar polish (non-critical, progressive enhancement) ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sc-gold);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- Lightweight modal (used by Admin Categories/Brands CRUD) ---------- */
+.sc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+}
+.sc-modal {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(500px, 92vw);
+  z-index: 1060;
+}
+.sc-modal-content {
+  background: #fff;
+  border-radius: var(--sc-radius);
+  overflow: hidden;
+  box-shadow: var(--sc-shadow-md);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.sc-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.sc-modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+.sc-modal-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+

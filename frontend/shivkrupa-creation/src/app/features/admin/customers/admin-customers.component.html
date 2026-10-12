@@ -1,0 +1,79 @@
+<h2 class="mb-4">Manage Customers</h2>
+
+<div class="card p-3 mb-3">
+  <div class="input-group">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by name, email, or business…"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()"
+    />
+    <button class="btn btn-outline-primary" type="button" (click)="onSearch()">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  @if (loading()) {
+    <sc-loading-spinner message="Loading customers…"></sc-loading-spinner>
+  } @else if (customers().length === 0) {
+    <sc-empty-state icon="bi-people" title="No customers found"></sc-empty-state>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Business</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (customer of customers(); track customer.id) {
+            <tr>
+              <td>{{ customer.fullName }}</td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.phoneNumber || '—' }}</td>
+              <td>{{ customer.businessName || '—' }}</td>
+              <td>{{ customer.city }}{{ customer.city && customer.state ? ', ' : '' }}{{ customer.state }}</td>
+              <td>
+                <span class="badge" [class.bg-success]="customer.isActive" [class.bg-secondary]="!customer.isActive">
+                  {{ customer.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td class="text-end">
+                <button
+                  class="btn btn-sm"
+                  [class.btn-outline-danger]="customer.isActive"
+                  [class.btn-outline-success]="!customer.isActive"
+                  type="button"
+                  (click)="toggleStatus(customer)"
+                >
+                  {{ customer.isActive ? 'Deactivate' : 'Activate' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages() > 1) {
+      <nav class="p-3" aria-label="Customer pagination">
+        <ul class="pagination justify-content-center mb-0">
+          @for (page of pageNumbers; track page) {
+            <li class="page-item" [class.active]="page === pageNumber()">
+              <button class="page-link" type="button" (click)="goToPage(page)">{{ page }}</button>
+            </li>
+          }
+        </ul>
+      </nav>
+    }
+  }
+</div>

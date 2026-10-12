@@ -1,0 +1,23 @@
+.sc-filter-card {
+  position: sticky;
+  top: 90px;
+}
+
+.sc-product-card {
+  overflow: hidden;
+}
+.sc-product-img {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--sc-ivory);
+  position: relative;
+}
+
+.page-link {
+  color: var(--sc-maroon);
+}
+.page-item.active .page-link {
+  background-color: var(--sc-maroon);
+  border-color: var(--sc-maroon);
+}

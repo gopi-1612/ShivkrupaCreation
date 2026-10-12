@@ -1,0 +1,73 @@
+.sc-hero {
+  background: linear-gradient(135deg, var(--sc-maroon) 0%, var(--sc-maroon-dark) 100%);
+  color: #fff;
+}
+
+.min-vh-50 {
+  min-height: 50vh;
+}
+
+.sc-hero-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: var(--sc-gold-light);
+  font-weight: 600;
+}
+
+.sc-hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.sc-gold-text {
+  color: var(--sc-gold);
+}
+
+.sc-hero-subtitle {
+  font-size: 1.1rem;
+  color: #f0e6da;
+  max-width: 540px;
+}
+
+.sc-hero-visual {
+  font-size: 14rem;
+  color: rgba(255, 255, 255, 0.12);
+}
+
+.sc-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  color: var(--sc-gold);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.sc-category-card {
+  overflow: hidden;
+}
+
+.sc-category-img {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--sc-gold-light);
+}
+
+.sc-product-card {
+  overflow: hidden;
+}
+
+.sc-product-img {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--sc-ivory);
+  position: relative;
+}
+
+.sc-why-strip {
+  background-color: var(--sc-gold-light);
+}

@@ -1,0 +1,28 @@
+.sc-auth-wrapper {
+  min-height: calc(100vh - 350px);
+  display: flex;
+  align-items: center;
+}
+
+.sc-auth-card {
+  border-radius: var(--sc-radius);
+  overflow: hidden;
+  box-shadow: var(--sc-shadow-md);
+}
+
+.sc-auth-side {
+  background: linear-gradient(160deg, var(--sc-maroon) 0%, var(--sc-maroon-dark) 100%);
+  color: #fff;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sc-auth-side h3 {
+  font-weight: 700;
+}
+
+.sc-auth-form {
+  padding: 3rem 2rem;
+}

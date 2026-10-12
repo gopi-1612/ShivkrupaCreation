@@ -1,0 +1,99 @@
+<div class="container sc-auth-wrapper py-5">
+  <div class="row justify-content-center w-100">
+    <div class="col-lg-9">
+      <div class="row g-0 sc-auth-card">
+        <div class="col-md-5 sc-auth-side d-none d-md-flex">
+          <h3 class="mb-3">Join Shivkrupa<br />Creation</h3>
+          <p class="mb-0 text-light-emphasis">
+            Register your business to unlock wholesale pricing, bulk ordering, and priority stock access.
+          </p>
+        </div>
+
+        <div class="col-md-7 bg-white sc-auth-form">
+          <h4 class="mb-1">Create Your Account</h4>
+          <p class="text-muted mb-4">It only takes a minute</p>
+
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Full Name *</label>
+                <input type="text" class="form-control" formControlName="fullName"
+                  [class.is-invalid]="form.controls.fullName.invalid && form.controls.fullName.touched" />
+                @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+                <div class="invalid-feedback">Full name is required.</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email *</label>
+                <input type="email" class="form-control" formControlName="email"
+                  [class.is-invalid]="form.controls.email.invalid && form.controls.email.touched" />
+                @if (form.controls.email.invalid && form.controls.email.touched) {
+                <div class="invalid-feedback">Enter a valid email address.</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Mobile Number</label>
+                <input type="tel" class="form-control" formControlName="phoneNumber" placeholder="10-digit mobile"
+                  [class.is-invalid]="form.controls.phoneNumber.invalid && form.controls.phoneNumber.touched" />
+                @if (form.controls.phoneNumber.invalid && form.controls.phoneNumber.touched) {
+                <div class="invalid-feedback">Enter Valid Phone Number....</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Business Name</label>
+                <input type="text" class="form-control" formControlName="businessName" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">GST Number</label>
+                <input type="text" class="form-control" formControlName="gstNumber" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" formControlName="city" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" formControlName="state" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Password *</label>
+                <input type="password" class="form-control" formControlName="password"
+                  [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched" />
+                @if (form.controls.password.invalid && form.controls.password.touched) {
+                <div class="invalid-feedback">Minimum 6 characters.</div>
+                }
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Confirm Password *</label>
+                <input type="password" class="form-control" formControlName="confirmPassword"
+                  [class.is-invalid]="form.errors?.['passwordMismatch'] && form.controls.confirmPassword.touched" />
+                @if (form.errors?.['passwordMismatch'] && form.controls.confirmPassword.touched) {
+                <div class="invalid-feedback">Passwords do not match.</div>
+                }
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-4" [disabled]="submitting() ||form.invalid">
+              @if (submitting()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              Create Account
+            </button>
+
+            <p class="text-center text-muted mt-4 mb-0">
+              Already have an account? <a routerLink="/login">Login</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

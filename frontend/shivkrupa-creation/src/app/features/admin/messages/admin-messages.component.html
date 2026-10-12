@@ -1,0 +1,64 @@
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Contact Us Submissions</span>
+    <h1>Inquiries <span class="unread-pill" *ngIf="unreadCount">{{ unreadCount }} new</span></h1>
+  </div>
+</div>
+
+<div class="messages-layout" *ngIf="!loading && messages.length; else emptyOrLoading">
+  <div class="message-list">
+    <button class="message-row" *ngFor="let m of messages" [class.unread]="!m.isRead"
+      [class.active]="selected?.id === m.id" (click)="openMessage(m)">
+      <div class="row-main">
+        <strong>{{ m.name }}</strong>
+        <span class="muted">{{m.email }}</span>
+      </div>
+      <div class="row-meta">
+        <span class="date">{{ m.submittedAtUtc | date:'MMM d' }}</span>
+        <span class="dot" *ngIf="!m.isRead"></span>
+      </div>
+    </button>
+  </div>
+
+  <div class="message-detail" *ngIf="selected; else pickOne">
+    <div class="detail-head">
+      <div>
+        <h2>{{ selected.name }}</h2>
+        <span class="muted">{{ selected.email }}</span>
+      </div>
+      <button class="btn btn-danger btn-sm" (click)="confirmDelete(selected, $event)">Delete</button>
+    </div>
+
+    <div class="detail-meta">
+      <div><span class="label">Email</span><span>{{ selected.email }}</span></div>
+      <div><span class="label">Phone</span><span>{{ selected.phone || '—' }}</span></div>
+      <div><span class="label">Submitted</span><span>{{ selected.submittedAtUtc | date:'medium' }}</span></div>
+    </div>
+
+    <div class="detail-message">
+      <span class="label">Message</span>
+      <p>{{ selected.message }}</p>
+    </div>
+
+    <a [href]="'mailto:' + selected.email" class="btn btn-primary">Reply by Email</a>
+  </div>
+
+  <ng-template #pickOne>
+    <div class="empty-detail">
+      <p>Select an inquiry to view details.</p>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #emptyOrLoading>
+  <div class="empty-state" *ngIf="!loading">
+    <h3>No inquiries yet</h3>
+    <p>Submissions from the Contact Us page will appear here.</p>
+  </div>
+  <div class="loading-state" *ngIf="loading">Loading inquiries...</div>
+</ng-template>
+
+<app-confirm-dialog [open]="!!deleteTarget" title="Delete this inquiry?"
+  [message]="'The message from \'' + (deleteTarget?.name ?? '') + '\' will be permanently removed.'"
+  confirmLabel="Delete" (confirmed)="performDelete()" (cancelled)="cancelDelete()">
+</app-confirm-dialog>

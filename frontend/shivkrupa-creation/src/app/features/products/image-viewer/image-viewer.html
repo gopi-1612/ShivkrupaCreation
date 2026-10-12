@@ -1,0 +1,28 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <!-- Segment Progress Bars (Top Header) - Clickable to jump to index -->
+    <div class="segments-container">
+      @for (img of images(); track img.id; let i = $index) {
+      <div class="segment-track" (click)="goToImage(i)" title="Go to image {{ i + 1 }}">
+        <div class="segment-fill" [style.width.%]="getSegmentFill(i)"></div>
+      </div>
+      }
+    </div>
+
+    <div class="modal-header-row">
+      <span class="counter">Image {{ currentIndex() + 1 }} of {{ images().length }}</span>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+
+    <!-- Main Active Image -->
+    <img [src]="resolveImage(images()[currentIndex()].imageUrl)" [alt]="images()[currentIndex()].altText"
+      class="preview-img" (mouseenter)="onHoverStart()" (mouseleave)="onHoverEnd()" />
+
+    <!-- Navigation Buttons -->
+    @if (images().length > 1) {
+    <button class="nav-btn prev" (click)="prevImage()">&#10094;</button>
+    <button class="nav-btn next" (click)="nextImage()">&#10095;</button>
+    }
+  </div>
+</div>

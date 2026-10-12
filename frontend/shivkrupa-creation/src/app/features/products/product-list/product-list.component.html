@@ -1,0 +1,134 @@
+<div class="container sc-section">
+  <div class="mb-4">
+    <p class="sc-eyebrow">Catalog</p>
+    <h2 class="mb-0">Wholesale Products</h2>
+  </div>
+
+  <div class="row g-4">
+    <!-- ---------- Filters sidebar ---------- -->
+    <aside class="col-lg-3">
+      <div class="card p-3 sc-filter-card">
+        <h6 class="mb-3">Search</h6>
+        <input
+          type="text"
+          class="form-control mb-4"
+          placeholder="Search products, SKU…"
+          (input)="onSearchInput($any($event.target).value)"
+        />
+
+        <h6 class="mb-2">Category</h6>
+        <select class="form-select mb-4" [(ngModel)]="query.categoryId" (ngModelChange)="onFilterChange()">
+          <option [ngValue]="undefined">All Categories</option>
+          @for (cat of categories(); track cat.id) {
+            <option [ngValue]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+
+        <h6 class="mb-2">Brand</h6>
+        <select class="form-select mb-4" [(ngModel)]="query.brandId" (ngModelChange)="onFilterChange()">
+          <option [ngValue]="undefined">All Brands</option>
+          @for (brand of brands(); track brand.id) {
+            <option [ngValue]="brand.id">{{ brand.name }}</option>
+          }
+        </select>
+
+        <h6 class="mb-2">Price Range (₹)</h6>
+        <div class="d-flex gap-2 mb-4">
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Min"
+            [(ngModel)]="query.minPrice"
+            (change)="onFilterChange()"
+          />
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Max"
+            [(ngModel)]="query.maxPrice"
+            (change)="onFilterChange()"
+          />
+        </div>
+
+        <button class="btn btn-outline-secondary w-100" type="button" (click)="clearFilters()">
+          <i class="bi bi-x-circle me-1"></i>Clear Filters
+        </button>
+      </div>
+    </aside>
+
+    <!-- ---------- Product grid ---------- -->
+    <div class="col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <span class="text-muted small">{{ totalCount() }} products found</span>
+
+        <select
+          class="form-select form-select-sm w-auto"
+          [(ngModel)]="query.sortBy"
+          (ngModelChange)="onSortChange($event)"
+        >
+          <option value="Newest">Newest First</option>
+          <option value="NameAsc">Name: A to Z</option>
+          <option value="NameDesc">Name: Z to A</option>
+          <option value="PriceAsc">Price: Low to High</option>
+          <option value="PriceDesc">Price: High to Low</option>
+        </select>
+      </div>
+
+      @if (loading()) {
+        <sc-loading-spinner message="Loading products…"></sc-loading-spinner>
+      } @else if (products().length === 0) {
+        <sc-empty-state
+          icon="bi-search"
+          title="No products found"
+          subtitle="Try adjusting your search or filters."
+        >
+          <button class="btn btn-outline-primary mt-3" type="button" (click)="clearFilters()">Clear Filters</button>
+        </sc-empty-state>
+      } @else {
+        <div class="row g-4">
+          @for (product of products(); track product.id) {
+            <div class="col-6 col-md-4">
+              <a [routerLink]="['/products', product.slug]" class="card sc-product-card h-100 text-decoration-none">
+                <div class="sc-product-img" [style.backgroundImage]="'url(' + resolveImage(product.primaryImageUrl) + ')'">
+                  @if (product.isFeatured) {
+                    <span class="badge badge-sc-gold position-absolute top-0 start-0 m-2">Featured</span>
+                  }
+                  @if (!product.inStock) {
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">Out of stock</span>
+                  }
+                </div>
+                <div class="card-body">
+                  <p class="small text-muted mb-1">{{ product.brandName }} · {{ product.categoryName }}</p>
+                  <h6 class="text-dark mb-1 text-truncate">{{ product.name }}</h6>
+                  <p class="small text-muted mb-2">SKU: {{ product.sku }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold" style="color: var(--sc-maroon);">₹{{ product.wholesalePrice }}</span>
+                    <small class="text-muted">MOQ {{ product.minWholesaleQuantity }}</small>
+                  </div>
+                </div>
+              </a>
+            </div>
+          }
+        </div>
+
+        @if (totalPages() > 1) {
+          <nav class="mt-4" aria-label="Product pagination">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="query.pageNumber === 1">
+                <button class="page-link" type="button" (click)="goToPage((query.pageNumber ?? 1) - 1)">Prev</button>
+              </li>
+              @for (page of pageNumbers; track page) {
+                <li class="page-item" [class.active]="page === query.pageNumber">
+                  <button class="page-link" type="button" (click)="goToPage(page)">{{ page }}</button>
+                </li>
+              }
+              <li class="page-item" [class.disabled]="query.pageNumber === totalPages()">
+                <button class="page-link" type="button" (click)="goToPage((query.pageNumber ?? 1) + 1)">Next</button>
+              </li>
+            </ul>
+          </nav>
+        }
+      }
+    </div>
+  </div>
+</div>

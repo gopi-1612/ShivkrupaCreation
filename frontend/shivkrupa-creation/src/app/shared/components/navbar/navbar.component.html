@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg sticky-top sc-navbar">
+  <div class="container">
+    <a href="">
+      <img src="../../../../assets/images/tasmee_logo.ico" width="80" height="60" alt="Company Logo"
+        style="margin-right: 10px;" />
+    </a>
+    <a class="navbar-brand sc-brand" routerLink="/">
+      <span class="sc-brand-mark">Shivkrupa</span> <span class="sc-brand-sub">Creation</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#scNavbarContent"
+      aria-controls="scNavbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="scNavbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/products" routerLinkActive="active">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact Us</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav align-items-lg-center gap-lg-2">
+        @if (auth.isAdmin()) {
+        <li class="nav-item">
+          <a class="btn btn-sm btn-outline-primary" routerLink="/admin/dashboard">
+            <i class="bi bi-speedometer2 me-1"></i>Admin Panel
+          </a>
+        </li>
+        }
+
+        @if (auth.isLoggedIn()) {
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-1" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle fs-5"></i>
+            <span>{{ auth.currentUser()?.fullName }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" routerLink="/profile"><i class="bi bi-person me-2"></i>My Profile</a></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <button class="dropdown-item text-danger" type="button" (click)="onLogout()">
+                <i class="bi bi-box-arrow-right me-2"></i>Logout
+              </button>
+            </li>
+          </ul>
+        </li>
+        } @else {
+        <li class="nav-item">
+          <a class="btn btn-sm btn-outline-primary me-2" routerLink="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-sm btn-primary" routerLink="/register">Register</a>
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

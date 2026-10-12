@@ -1,0 +1,8 @@
+bin/
+obj/
+*.user
+appsettings.Local.json
+wwwroot/uploads/products/images/*
+wwwroot/uploads/products/videos/*
+!wwwroot/uploads/products/images/.gitkeep
+!wwwroot/uploads/products/videos/.gitkeep
