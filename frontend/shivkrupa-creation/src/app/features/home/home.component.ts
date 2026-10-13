@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoryService.getAll().subscribe({
-      next: (res) => this.categories.set(res.data ?? []),
+      next: (res) => this.categories.set(res.data?.filter(c => c.productCount > 0) ?? []),
       complete: () => this.loadingCategories.set(false)
     });
 

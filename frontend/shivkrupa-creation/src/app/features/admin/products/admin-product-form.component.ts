@@ -124,9 +124,9 @@ export class AdminProductFormComponent implements OnInit {
   private buildVariantGroup(variant?: ProductDetail['variants'][number]) {
     return this.fb.nonNullable.group({
       id: [variant?.id ?? null],
-      color: [variant?.color ?? ''],
+      color: [variant?.color ?? '', Validators.required],
       colorHex: [variant?.colorHex ?? '#800000'],
-      size: [variant?.size ?? ''],
+      size: [variant?.size ?? '', Validators.required],
       sku: [variant?.sku ?? ''],
       stockQuantity: [variant?.stockQuantity ?? 0],
       priceOverride: [variant?.priceOverride ?? null],
