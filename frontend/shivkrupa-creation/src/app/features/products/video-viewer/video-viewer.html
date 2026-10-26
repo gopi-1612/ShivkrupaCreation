@@ -1,0 +1,18 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <div class="modal-header-row">
+      <span class="counter">video {{ currentIndex() + 1 }} of {{ videos().length }}</span>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+
+    <!-- Main Active video -->
+    <video [src]="resolvevideo(videos()[currentIndex()].videoUrl)" class="preview-img" controls></video>
+
+    <!-- Navigation Buttons -->
+    @if (videos().length > 1) {
+    <button class="nav-btn prev" (click)="prevvideo()">&#10094;</button>
+    <button class="nav-btn next" (click)="nextvideo()">&#10095;</button>
+    }
+  </div>
+</div>

@@ -84,9 +84,11 @@
       <div class="mt-4">
         <h6 class="mb-2">Product Videos</h6>
         <div class="row g-3">
-          @for (video of product()!.videos; track video.id) {
+          @for (video of product()!.videos; track video.id; let i = $index) {
           <div class="col-6">
-            <video [src]="resolveImage(video.videoUrl)" [title]="video.title" controls class="w-100 rounded"></video>
+            <video [src]="resolveImage(video.videoUrl)" (click)="openVideoPreview()" [title]="video.title" controls
+              [class.active]="i === activeVideoIndex()" class="w-100 rounded"
+              style="cursor: pointer;height: 100px;"></video>
           </div>
           }
         </div>
@@ -209,4 +211,9 @@
 @if (showPreview()) {
 <app-image-viewer [images]="images()" (closeModal)="closePreview()" [activeIndex]="activeImageIndex()">
 </app-image-viewer>
+}
+
+@if (showVideoPreview()) {
+<app-video-viewer [videos]="product()!.videos" (closeModal)="closeVideoPreview()" [activeIndex]="activeVideoIndex()">
+</app-video-viewer>
 }

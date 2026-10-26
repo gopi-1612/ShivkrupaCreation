@@ -6,6 +6,7 @@ import { ToastService } from '../../../core/services/toast.service';
 import { Category } from '../../../core/models/category-brand.model';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
+import { consumerMarkDirty } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'sc-admin-categories',
@@ -64,6 +65,7 @@ export class AdminCategoriesComponent implements OnInit {
     });
 
     // Display the existing image from your backend
+    this.imagePreview = null
     this.imagePreview = category.imageUrl
       ? this.resolveImage(category.imageUrl)
       : null;

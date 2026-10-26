@@ -6,11 +6,13 @@ import { ProductDetail, ProductVariant } from '../../../core/models/product.mode
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { EmptyStateComponent } from '../../../shared/components/empty-state/empty-state.component';
 import { ImageViewerComponent } from '../image-viewer/image-viewer';
+import { single } from 'rxjs';
+import { videoViewerComponent } from '../video-viewer/video-viewer';
 
 @Component({
   selector: 'sc-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent, ImageViewerComponent],
+  imports: [CommonModule, RouterLink, LoadingSpinnerComponent, EmptyStateComponent, ImageViewerComponent, videoViewerComponent],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss'
 })
@@ -25,9 +27,14 @@ export class ProductDetailComponent implements OnInit {
   // ---------- Carousel state ----------
   readonly activeImageIndex = signal(0);
 
+  readonly activeVideoIndex = signal(0);
+
+
   // Signal to track whether the preview modal is open
 
   showPreview = signal<boolean>(false);
+
+  showVideoPreview = signal<boolean>(false);
 
   openPreview() {
     this.showPreview.set(true);
@@ -35,6 +42,14 @@ export class ProductDetailComponent implements OnInit {
 
   closePreview() {
     this.showPreview.set(false);
+  }
+
+  openVideoPreview() {
+    this.showVideoPreview.set(true);
+  }
+
+  closeVideoPreview() {
+    this.showVideoPreview.set(false);
   }
 
 

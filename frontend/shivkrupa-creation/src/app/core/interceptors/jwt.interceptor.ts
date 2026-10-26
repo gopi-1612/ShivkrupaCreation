@@ -2,6 +2,7 @@ import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 /**
  * Attaches the JWT access token to every outgoing API request. On a 401
@@ -12,6 +13,7 @@ import { AuthService } from '../services/auth.service';
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getAccessToken();
+  const router = inject(Router);
 
   const authorizedReq = token
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
@@ -25,6 +27,16 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
         return authService.refreshToken().pipe(
           switchMap((res) => {
             const newToken = res.data?.accessToken;
+
+            if (!newToken) {
+              authService.logout();
+              router.navigate(['/login']);
+
+              return throwError(
+                () => new Error('Unable to refresh access token')
+              );
+            }
+
             const retriedReq = newToken
               ? req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } })
               : req;
@@ -32,6 +44,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
           }),
           catchError((refreshError) => {
             authService.logout();
+            router.navigate(['/login']);
             return throwError(() => refreshError);
           })
         );
