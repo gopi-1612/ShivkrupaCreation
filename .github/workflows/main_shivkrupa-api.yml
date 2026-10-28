@@ -1,0 +1,71 @@
+name: Build and deploy ASP.Net Core app to Azure Web App - shivkrupa-api
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  PROJECT_PATH: backend/ShivkrupaCreation.API/ShivkrupaCreation.API.csproj
+  PUBLISH_PATH: ./publish
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore "${{ env.PROJECT_PATH }}"
+
+      - name: Build
+        run: dotnet build "${{ env.PROJECT_PATH }}" --configuration Release --no-restore
+
+      - name: Publish
+        run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration Release --output "${{ env.PUBLISH_PATH }}" --no-build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-app
+          path: ${{ env.PUBLISH_PATH }}
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dotnet-app
+          path: ./publish
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_BC034B4D533E441D9319A4337406F93B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_73D409A768D64B9DBD514B9E1D1EF754 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8D7A530D9D5547039D6DD934C48AFD1C }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'shivkrupa-api'
+          slot-name: 'Production'
+          package: ./publish
