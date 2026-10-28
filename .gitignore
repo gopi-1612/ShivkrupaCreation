@@ -16,3 +16,7 @@
 .env
 .env.*
 !.env.example
+
+# ASP.NET Core secrets
+appsettings.Local.json
+appsettings.*.Local.json
