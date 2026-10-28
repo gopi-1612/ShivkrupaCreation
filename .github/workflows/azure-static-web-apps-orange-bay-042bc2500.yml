@@ -21,4 +21,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
           app_location: ./frontend/shivkrupa-creation
-          output_location: ""
+          output_location: dist/shivkrupa-creation/browser
